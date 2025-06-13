@@ -1,0 +1,23 @@
+language: go
+go:
+  - "1.24"
+
+services:
+  - docker
+
+before_install:
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+
+jobs:
+  include:
+    - stage: test
+      name: "Run unit tests"
+      script:
+        - go test -v ./app
+
+    - stage: build
+      name: "Build and push Docker image"
+      script:
+        - docker build -t $DOCKER_USERNAME/devops-challenge .
+        - docker push $DOCKER_USERNAME/devops-challenge
+      if: branch = master
