@@ -40,6 +40,13 @@ func getSecret(ctx context.Context, client DynamoDBAPI, tableName string) (strin
 	return code, nil
 }
 
+func getEnv(key, fallback string) string {
+	if v := os.Getenv(key); v != "" {
+		return v
+	}
+	return fallback
+}
+
 func main() {
 	r := gin.Default()
 	ctx := context.Background()
@@ -64,8 +71,8 @@ func main() {
 	r.GET("/health", func(c *gin.Context) {
 		c.JSON(http.StatusOK, HealthResponse{
 			Status:    "healthy",
-			Container: os.Getenv("CONTAINER_URL"),
-			Project:   os.Getenv("PROJECT_URL"),
+			Project: getEnv("PROJECT_URL", "https://github.com/PatentTest/devops-challenge"),
+			Container: getEnv("CONTAINER_URL", "https://hub.docker.com/r/PatentTest/devops-challenge"),
 		})
 	})
 

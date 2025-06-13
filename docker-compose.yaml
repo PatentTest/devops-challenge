@@ -1,0 +1,17 @@
+version: '3.9'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - DYNAMODB_TABLE=${DYNAMODB_TABLE:-devops-challenge}
+      - CONTAINER_URL=${CONTAINER_URL:-https://hub.docker.com/r/PatentTest/devops-challenge}
+      - PROJECT_URL=${PROJECT_URL:-https://github.com/PatentTest/devops-challenge}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_REGION=${AWS_REGION}
+    working_dir: /app
