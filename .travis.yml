@@ -5,6 +5,10 @@ go:
 services:
   - docker
 
+env:
+  global:
+    - GO111MODULE=on
+
 before_install:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
@@ -12,12 +16,13 @@ jobs:
   include:
     - stage: test
       name: "Run unit tests"
+      working_directory: ./app
       script:
-        - go test -v ./app
+        - go test -v ./...
 
     - stage: build
       name: "Build and push Docker image"
       script:
         - docker build -t $DOCKER_USERNAME/devops-challenge .
         - docker push $DOCKER_USERNAME/devops-challenge
-      if: branch = master
+      if: branch = main
