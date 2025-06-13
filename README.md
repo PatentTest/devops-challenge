@@ -1,2 +1,2 @@
-# DevOps challenge submittion
+# DevOps challenge submission
 
