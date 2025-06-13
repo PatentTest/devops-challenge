@@ -1,18 +1,19 @@
+# Stage 1: Build
 FROM golang:1.24.1-alpine AS builder
 
 WORKDIR /app
 
-COPY app/go.mod app/go.sum ./
+COPY go.mod go.sum ./
 RUN go mod download
 
-COPY app/ .
-RUN go build -o server .
+COPY app/ ./app/
+RUN go build -o server ./app
 
 # Stage 2: Production (distroless)
 FROM gcr.io/distroless/static-debian12
 
 WORKDIR /app
-COPY --from=builder /app/server ./
+COPY --from=builder /app/server .
 
 EXPOSE 5000
 ENTRYPOINT ["/app/server"]
