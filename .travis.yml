@@ -16,8 +16,8 @@ jobs:
   include:
     - stage: test
       name: "Run unit tests"
-      working_directory: ./app
       script:
+        - cd app
         - go test -v ./...
 
     - stage: build

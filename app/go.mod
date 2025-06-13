@@ -1,6 +1,6 @@
 module devops-challenge
 
-go 1.22
+go 1.24.1
 
 require (
 	github.com/aws/aws-sdk-go-v2/config v1.29.16
